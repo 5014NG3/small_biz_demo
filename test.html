@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA County Small business finder</title>
+
+    <script type="module" src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
+    <script>
+        // Function to set the height and width of the Tableau visualization
+        function setTableauSize() {
+            var tableauViz = document.getElementById("tableauViz");
+            var windowHeight = window.innerHeight;
+            var windowWidth = window.innerWidth;
+
+            // Set the height and width to 75% of the window's height and width
+            var heightPercentage = 0.75;
+            var widthPercentage = 0.75;
+            tableauViz.style.height = windowHeight * heightPercentage + "px";
+            tableauViz.style.width = windowWidth * widthPercentage + "px";
+        }
+
+        // Call the function when the window is resized
+        window.addEventListener("resize", setTableauSize);
+
+        // Call the function initially to set the initial size
+        window.addEventListener("load", setTableauSize);
+    </script>
+    <style>
+        /* Base styles for all screen sizes */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #3498db;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
+
+        header h1 {
+            font-size: 36px;
+        }
+
+        nav {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 10px;
+        }
+
+        main {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 0 auto; /* Center the content horizontally */
+
+
+        }
+
+        section{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+
+
+
+        .image-container img {
+            margin-bottom: 20px;
+            text-align: center;
+            width: 75%;
+
+        }
+
+        #data-analysis {
+            width: 50%;
+            text-align: left;
+        }
+
+        #data-sources {
+            width: 50%;
+            text-align: left;
+        }
+
+        #data-cleaning{
+            width: 50%;
+            text-align: left;
+        }
+        #data-future{
+            width: 50%;
+            text-align: left;
+        }
+        #image-gallery{
+            width: 50%;
+        }   
+        p{
+            text-align: left;
+        }     
+
+        img{
+            border: 2px solid black;
+        }
+
+        footer{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Responsive styles for tablets (e.g., iPad) */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 24px;
+            }
+            .image-container {
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Responsive styles for mobile devices (e.g., smartphones) */
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 20px;
+            }
+            nav {
+                text-align: center;
+            }
+            .image-container {
+                margin-bottom: 10px;
+            }
+        }
+    
+    </style>
+</head>
+<body>
+    <header>
+        <h1>LA County Small Business Finder</h1>
+    </header>
+
+    <main>
+        <section id="data-analysis">
+            <h2>Overview</h2>
+
+            <p> The purpose of this project was twofold: to uncover patterns among small businesses within Los Angeles County and to develop a user-friendly dashboard enabling users to easily search for such businesses. Users are provided with the capability to filter businesses based on city, zip code, or business type. Additionally, I analyzed the age demographics, which can provide insights into whether a small business is situated in an area aligned with its target demographic </p>
+
+
+            <div>
+                <tableau-viz
+                    id="tableauViz"
+                    src="https://public.tableau.com/views/asb_demo_viz/Dashboard1?:language=en-US&publish=yes&:display_count=n&:origin=viz_share_link"
+                    toolbar="bottom"
+                    hide-tabs>
+                </tableau-viz>
+            </div>
+        </section>
+        <section id="data-sources">
+            <h2>Data Sources</h2>
+
+            <p> To gather comprehensive data, I utilized sources such as the Office of Finance, U.S. Small Business Administration, and the U.S. Census Bureau. </p>
+
+
+            <ul>
+                <li><a href="https://dsbs.sba.gov/search/dsp_dsbs.cfm">LA County Small Business Dataset</a></li>
+                <li><a href="https://data.lacity.org/Administration-Finance/Listing-of-Active-Businesses/6rrh-rzua">Active Business Dataset</a></li>
+                <li><a href="https://data.census.gov/table?q=demographic+california+ztca">California Age Demographics Dataset</a></li>
+            </ul>
+            
+        </section>
+        <section id="data-cleaning">
+            <h2>Data Cleaning</h2>
+            
+            <h4>Active Business</h4>
+            <p> Removed invalid/null: Zip codes, NAICS business desriptions, and business names. I decided to keep invalid coordinates values to not impeded data analysis. </p>
+
+            <h4>Small Business</h4>
+            <p> Removed invalid/null zip codes, combined contact names from columns marked as 'unknown', and removed miscellaneous columns. </p>
+
+            <h4>California Demographics</h4>
+            <p> Kept relevant column names for the age groups in California zip codes, extracted zip codes from geographic area names, and dropped any rows containing null values.</p>
+
+
+        </section>
+        <section id="image-gallery">
+            <h2>Analysis</h2>
+            <h4>Small Business count vs Population(Zip code)</h4>
+            <div class="image-container">
+                <img src="public/bpop.png" alt="Small Business Count vs Population(By Zip Code)">
+                <p>After obtaining the number of small businesses within a specific zip code and comparing it to the population of that same zip code, I conducted a correlation analysis. The results indicate a relatively weak correlation between the population and the amount of small businesses.</p>
+            </div>
+
+            <h4>Small businesses established by year in the LA County</h4>
+            <div class="image-container">
+                <img src="public/sby.png" alt="Small Business Count vs Population(By Zip Code)">
+                <p>The graph clearly illustrates exponential growth in small businesses until the year 2003, after which there was a noticeable decline. The reasons for this decline can only be speculated upon, including factors such as the growth of large corporations, buyouts of small businesses, or insufficient funding. I was not expecting to see this, which, to me, further underscores the importance of going the extra mile to support small businesses.</p>
+            </div>
+
+        </section>
+
+        <section id="data-future">
+            <h2>Future Work</h2>
+            
+            <h4>Improving data quality</h4>
+            <p> While attempting to link the Small Business dataset with the Active Business dataset, I encountered several challenges. The method I used to establish this connection was not efficient. I resorted to creating a unique key by combining the business name and street address. However, this approach limited me to utilizing only 10% of the small business dataset on the map. </p>
+            <p> This step is critical because the Active Business data contains NAICS business descriptions that categorize businesses effectively along with business location coordinates. In contrast, the small business dataset relies on user-inputted business descriptions, resulting in a plethora of unique descriptions that hindered my ability to group businesses based on these descriptions.</p>
+            <p>To address this issue, I am considering two potential solutions. One approach involves using a Language Model (LM) to automatically categorize the existing small business descriptions. Alternatively, I could explore the option of obtaining a dataset with more accurate business descriptions. </p>
+
+            <h4>Gathering data from other counties</h4>
+            <p>Another valuable enhancement would involve retrieving small business data from other counties in California. This broader scope would provide a comprehensive view of small businesses across the state. Furthermore, it would empower users to locate nearby small businesses in any zip code of their choice. </p>
+
+
+
+
+
+
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Eduardo Galvez</p>
+    </footer>
+</body>
+</html>
